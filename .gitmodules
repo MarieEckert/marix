@@ -1,0 +1,3 @@
+[submodule "kernel/lint-boot"]
+	path = kernel/lint-boot
+	url = git@github.com:FelixEcker/lint-boot.git
