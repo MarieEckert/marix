@@ -1,0 +1,11 @@
+sector .config
+  fields mariebuild:
+    str cc 'x86_64-elf-gcc'
+
+    str src 'kernel/src/'
+    str obj 'kernel/obj/'
+
+    list files 'marix'
+
+    str std_flags '-ffreestanding -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2'
+    str comp_cmd '$(cc) $(std_flags) -c $(src)$(file).c -o $(obj)$(file).o'

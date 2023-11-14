@@ -1,0 +1,23 @@
+sector .config
+  fields mariebuild:
+    str asm 'nasm'
+
+    str src 'kernel/lint-boot/'
+    str obj 'kernel/obj/'
+
+    list files 'header:lint'
+
+    str std_flags '-f elf64'
+
+    str comp_cmd '$(asm) $(std_flags) $(src)$(file).s -o $(obj)$(file).o'
+
+sector .scripts
+  lines prepare:
+#!/bin/bash
+git submodule update --init
+
+if [[ -d kernel/obj ]]; then
+  rm -rf kernel/obj
+fi
+
+mkdir kernel/obj

@@ -1,0 +1,10 @@
+; marix kernel main build file
+sector .config
+  fields mariebuild:
+    str builddir 'build_files'
+    list files 'kernel/build.mb:iso.mb'
+
+    str debug_flags 'debug'
+    str release_flags 'release'
+
+    str comp_cmd 'mb -n --mode $(mode_flags) --in $(builddir)/$(file)'

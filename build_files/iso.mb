@@ -1,0 +1,6 @@
+sector .config
+  fields mariebuild:
+    str builddir 'build_files'
+    list files ''
+
+    str comp_cmd ''
