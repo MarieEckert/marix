@@ -1,2 +1,4 @@
 kernel/obj
 out/
+iso_gen
+*.iso
