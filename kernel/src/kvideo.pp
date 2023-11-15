@@ -11,6 +11,7 @@ type
     devicetype: TKVideoDeviceType;
     devicemode: TKVideoDeviceMode;
     vidmem: PChar;
+    woffs: Integer;
     width: Integer;
     height: Integer;
   end;
@@ -27,18 +28,25 @@ const
 
 var
   cursor_x, cursor_y: Integer;
+  vga_tm_color: Char;
   device: TKVideoDevice;
 
 implementation
 
-uses marix;
-
 procedure setup;
 begin
+  device.woffs := 0;
   case device.devicetype of
     kvdevtVGA: begin
       if device.devicemode = kvdevmTEXT then
         device.vidmem := PChar(VGA_TEXT_LOCATION);
+    end;
+  end;
+
+  case device.devicemode of
+    kvdevmTEXT: begin
+      cursor_x := 0;
+      cursor_y := 0;
     end;
   end;
 end;
@@ -57,10 +65,17 @@ end;
  * @brief implements putc for vga devices
  *)
 procedure _vga_putc(const c: Char);
+var
+  ix: Integer;
 begin
   if device.devicemode <> kvdevmTEXT then
     _vga_fb_putc(c);
-  { TODO: Implement VGA Textmode output }
+
+  ix := cursor_y * device.width + cursor_x + device.woffs;
+  device.vidmem[ix] := c;
+  device.vidmem[ix + 1 ] := vga_tm_color;
+  cursor_x := cursor_x + 1;
+  device.woffs := device.woffs + 1;
 end;
 
 procedure putc(const c: Char);
