@@ -1,6 +1,8 @@
+{$mode fpc}
 unit marix;
 
 interface
+  uses kconsole;
 
   procedure kernel_start; stdcall;
 
