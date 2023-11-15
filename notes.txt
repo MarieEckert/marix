@@ -1,0 +1,2 @@
+use freepascal?
+  Good osdev entry: https://wiki.osdev.org/Pascal_Bare_Bones
