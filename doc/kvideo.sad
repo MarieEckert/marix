@@ -1,0 +1,71 @@
+{$start}
+{$title} marix: kvideo
+
+{$begin-section} notice
+This document serves specification of how the component this document focuses on
+is and should be implemented.
+{$end-section}
+
+{$begin-section} overview
+{$head} Overview
+
+{$style bold} File: {$reset-all} kernel/src/kvideo.pp
+
+kvideo is the kernel's internal video handler acting as the backend for
+framebuffer and textmode device handling.
+{$begin-section} types
+{$sub-head} types
+
+{$style bold} [ENUM] {$reset-all} TKVideoDeviceType
+  Used to generally describe the type of a Video device.
+
+  {$style bold} kvdevtVGA: {$reset-all} VGA Device
+
+{$style bold} [ENUM] {$reset-all} TKVideoDeviceMode
+  Used to describe the mode in which a Video Device is.
+  
+  {$style bold} kvdevmTEXT: {$reset-all} Device is in a Text-Mode
+  {$style bold} kvdevmFB: {$reset-all} Device is in a Frame-Buffer mode
+
+{$style bold} [RECORD] {$reset-all} TKVideoDevice
+  Used to configure and represent a Video Device. 
+  {$style bold} devicetype: TKVideoDeviceType; {$reset-all}
+  {$style bold} devicemode: TKVideoDeviceMode; {$reset-all}
+  {$style bold} vidmem: PChar; {$reset-all} Pointer to the memory location of the device
+  {$style bold} width: Integer; {$reset-all} Pixel Width
+  {$style bold} height: Integer; {$reset-all} Pixel Height
+  {$style bold} cols: Integer; {$reset-all} Amount of Columns within the current Text Mode
+  {$style bold} rows: Integer; {$reset-all} Amount of Rows within the current Text Mode
+{$end-section}
+{$begin-section} procs-and-funcs
+{$sub-head} Procedures/Functions
+
+{$style bold} procedure setup; {$reset-all}
+  Sets the kvideo unit up apropriately for the device described within
+  kvideo.device
+
+{$style bold} procedure putc(const c: Char); {$reset-all}
+  Generic putc implementation which internally calls the appropriate devices
+  putc implementation
+
+{$end-section}
+{$begin-section} globals
+{$sub-head} Globals
+
+{$style bold} cursor_x, cursor_y: Integer; {$reset-all}
+  Describes the position of the cursor within text mode
+
+{$style bold} vga_tm_color: Char; {$reset-all}
+  Holds the color to be used for putc in VGA Textmode.
+
+{$style bold} device: TKVideoDevice; {$reset-all}
+  Holds the current device which is in use.
+
+{$end-section}
+{$begin-section} 
+{$sub-head} Constants
+
+{$style bold} VGA_TEXT_LOCATION = $b8000; {$reset-all}
+  Memory Address of the VGA Text-Mode 
+{$end-section}
+{$end-section}
