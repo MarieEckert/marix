@@ -25,7 +25,7 @@ begin
   kvideo.device.height := MAXROW;
   kvideo.setup;
 
-  kvideo.vga_color = Char(VGA_DEAULT_KCONSOLECOLOR);
+  kvideo.vga_tm_color := Char(VGA_DEFAULT_KCONSOLECOLOR);
 end;
 
 procedure setup(vga: Boolean);

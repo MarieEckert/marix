@@ -11,7 +11,6 @@ type
     devicetype: TKVideoDeviceType;
     devicemode: TKVideoDeviceMode;
     vidmem: PChar;
-    woffs: Integer;
     width: Integer;
     height: Integer;
   end;
@@ -35,7 +34,6 @@ implementation
 
 procedure setup;
 begin
-  device.woffs := 0;
   case device.devicetype of
     kvdevtVGA: begin
       if device.devicemode = kvdevmTEXT then
@@ -71,15 +69,22 @@ begin
   if device.devicemode <> kvdevmTEXT then
     _vga_fb_putc(c);
 
-  ix := cursor_y * device.width + cursor_x + device.woffs;
+  { offset = y * w * s + x * s }
+  { y = row; w = columns per row; x = column; s = element_size = 2 }
+  ix := cursor_y * device.width * 2 + cursor_x * 2;
   device.vidmem[ix] := c;
   device.vidmem[ix + 1 ] := vga_tm_color;
   cursor_x := cursor_x + 1;
-  device.woffs := device.woffs + 1;
 end;
 
 procedure putc(const c: Char);
 begin
+  if c = Char($0a) then
+  begin
+    cursor_x := 0;
+    cursor_y := cursor_y + 1;
+    exit;
+  end;
   case device.devicetype of
     kvdevtVGA: _vga_putc(c);
   end;

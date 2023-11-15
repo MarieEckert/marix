@@ -11,7 +11,7 @@ implementation
   procedure kernel_start; stdcall; [public, alias: 'kernel_start'];
   begin
     kconsole.setup(true);
-    kconsole.print('early setup done...');
+    kconsole.print('early setup done!'#10);
     kconsole.print('> Booting marix'); 
     asm
       @loop:
