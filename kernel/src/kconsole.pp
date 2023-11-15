@@ -7,11 +7,13 @@ uses kvideo;
 
 procedure setup(vga: Boolean);
 
-procedure print(const _str: PChar; const count: Integer);
+procedure print(const _str: PChar);
 
 const
   MAXCOL = 80;
   MAXROW = 25;
+
+  VGA_DEFAULT_KCONSOLECOLOR = $0F;
 
 implementation
 
@@ -21,6 +23,9 @@ begin
   kvideo.device.devicemode := kvdevmTEXT;
   kvideo.device.width := MAXCOL;
   kvideo.device.height := MAXROW;
+  kvideo.setup;
+
+  kvideo.vga_color = Char(VGA_DEAULT_KCONSOLECOLOR);
 end;
 
 procedure setup(vga: Boolean);
@@ -32,12 +37,16 @@ begin
   end;
 end;
 
-procedure print(const _str: PChar; const count: Integer);
+procedure print(const _str: PChar);
 var
   i: Integer;
 begin
-  for i := 0 to count - 1 do
+  i := 0;
+  while (_str[i] <> Char(0)) do
+  begin
     kvideo.putc(_str[i]);
+    i := i + 1;
+  end;
 end;
 
 end.
