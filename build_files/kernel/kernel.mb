@@ -1,11 +1,11 @@
 sector .config
   fields mariebuild:
-    str cc 'x86_64-elf-gcc'
+    str cc 'fpc'
 
     str src 'kernel/src/'
     str obj 'kernel/obj/'
 
-    list files 'marix'
+    list files 'marix.pp'
 
-    str std_flags '-ffreestanding -mcmodel=large -mno-red-zone -mno-mmx -mno-sse -mno-sse2'
-    str comp_cmd '$(cc) $(std_flags) -c $(src)$(file).c -o $(obj)$(file).o'
+    str std_flags '-Aelf -n -O3 -Op3 -Si -Sc -Sg -Xd -CX -XXs -Px86_64 -Rintel -TLinux'
+    str comp_cmd '$(cc) $(std_flags) -FE"$(obj)" -Fu"$(src)" $(src)$(file)'
