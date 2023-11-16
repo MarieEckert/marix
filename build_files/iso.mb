@@ -4,6 +4,7 @@ sector .config
     list files ''
 
     str comp_cmd ''
+    str finalize_cmd 'grub-mkrescue -o marix.iso iso_gen'
 
 sector .scripts
   lines prepare:
@@ -34,4 +35,3 @@ fi
 
 cp out/marix.bin $KERNELDEST
 
-grub-mkrescue -o marix.iso iso_gen
