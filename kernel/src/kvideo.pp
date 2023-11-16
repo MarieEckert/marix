@@ -102,12 +102,15 @@ begin
 end;
 
 procedure clear_screen;
-var
-  col, row, ix: Integer;
 begin
-  for row := 0 to device.height - 1 do
-    for col := 0 to device.width - 1 do
-      device.vidmem[addr_util.vga_textmode_addr(col, row, device.width)] := ' ';
+  cursor_x := 0;
+  cursor_y := 0;
+  for cursor_x := 0 to device.height - 1 do
+    for cursor_y := 0 to device.width - 1 do
+      putc(' ');
+  
+  cursor_x := 0;
+  cursor_y := 0;
 end;
 
 procedure textmode_push;
