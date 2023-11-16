@@ -18,6 +18,11 @@ type
 procedure setup;
 
 (*
+ * @brief pushes all lines which are on screen up by one
+ *)
+procedure textmode_push;
+
+(*
  * @brief abstract putc implementation
  *)
 procedure putc(const c: Char);
@@ -59,6 +64,21 @@ begin
   { TODO: Implement VGA Framebuffer }
 end;
 
+procedure _vga_tm_push;
+var
+  row, col, ix, new_ix: Integer;
+begin
+  for row := 1 to device.height - 1 do
+  begin
+    for col := 0 to device.width - 1 do
+    begin
+      ix := row * device.width * 2 + col * 2;
+      new_ix := (row - 1) * device.width * 2 + col * 2;
+      device.vidmem[new_ix] := device.vidmem[ix];
+    end;
+  end;
+end;
+
 (*
  * @brief implements putc for vga devices
  *)
@@ -77,12 +97,24 @@ begin
   cursor_x := cursor_x + 1;
 end;
 
+procedure textmode_push;
+begin
+  case device.devicetype of
+    kvdevtVGA: begin
+      if device.devicemode = kvdevmTEXT then
+        _vga_tm_push;
+    end;
+  end;
+end;
+
 procedure putc(const c: Char);
 begin
   if c = Char($0a) then
   begin
     cursor_x := 0;
     cursor_y := cursor_y + 1;
+    if cursor_y >= device.height then
+      textmode_push;
     exit;
   end;
   case device.devicetype of

@@ -12,7 +12,8 @@ implementation
   begin
     kconsole.setup(true);
     kconsole.print('early setup done!'#10);
-    kconsole.print('> Booting marix'); 
+    kconsole.print('> Booting marix'#10); 
+
     asm
       @loop:
       hlt
