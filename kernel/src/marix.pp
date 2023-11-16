@@ -2,7 +2,7 @@
 unit marix;
 
 interface
-  uses kconsole;
+  uses kvideo, kconsole;
 
   procedure kernel_start; stdcall;
 
@@ -11,6 +11,7 @@ implementation
   procedure kernel_start; stdcall; [public, alias: 'kernel_start'];
   begin
     kconsole.setup(true);
+    kvideo.clear_screen;
     kconsole.print('early setup done!'#10);
     kconsole.print('> Booting marix'#10); 
 

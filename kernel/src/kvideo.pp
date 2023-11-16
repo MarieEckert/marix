@@ -3,6 +3,8 @@ unit kvideo;
 
 interface
 
+uses addr_util;
+
 type
   TKVideoDeviceType = (kvdevtVGA);
   TKVideoDeviceMode = (kvdevmTEXT, kvdevmFB);
@@ -16,6 +18,8 @@ type
   end;
 
 procedure setup;
+
+procedure clear_screen;
 
 (*
  * @brief pushes all lines which are on screen up by one
@@ -72,8 +76,8 @@ begin
   begin
     for col := 0 to device.width - 1 do
     begin
-      ix := row * device.width * 2 + col * 2;
-      new_ix := (row - 1) * device.width * 2 + col * 2;
+      ix := addr_util.vga_textmode_addr(col, row, device.width);
+      new_ix := addr_util.vga_textmode_addr(col, row - 1, device.width);
       device.vidmem[new_ix] := device.vidmem[ix];
     end;
   end;
@@ -91,10 +95,19 @@ begin
 
   { offset = y * w * s + x * s }
   { y = row; w = columns per row; x = column; s = element_size = 2 }
-  ix := cursor_y * device.width * 2 + cursor_x * 2;
+  ix := addr_util.vga_textmode_addr(cursor_x, cursor_y, device.width);
   device.vidmem[ix] := c;
   device.vidmem[ix + 1 ] := vga_tm_color;
   cursor_x := cursor_x + 1;
+end;
+
+procedure clear_screen;
+var
+  col, row, ix: Integer;
+begin
+  for row := 0 to device.height - 1 do
+    for col := 0 to device.width - 1 do
+      device.vidmem[addr_util.vga_textmode_addr(col, row, device.width)] := ' ';
 end;
 
 procedure textmode_push;
