@@ -5,10 +5,21 @@ interface
 
 uses kvideo;
 
+(*
+ * @brief setup the kernel console. This will also setup kvideo for text mode
+ * 
+ * @param vga Sets if kvideo should be setup for VGA Text Mode.
+ *)
 procedure setup(vga: Boolean);
 
+(*
+ * @brief clears the kernel console
+ *)
 procedure clear;
 
+(*
+ * @brief prints a c-style string to the kernel console.
+ *)
 procedure print(const _str: PChar);
 
 const

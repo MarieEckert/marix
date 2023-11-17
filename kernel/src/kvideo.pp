@@ -6,6 +6,23 @@ interface
 uses addr_util;
 
 type
+  TTextModeColor = (BLACK = $0,
+                    BLUE = $1,
+                    GREEN = $2,
+                    CYAN = $3,
+                    RED = $4,
+                    MAGENTA = $5,
+                    BROWN = $6,
+                    LIGHT_GRAY = $7,
+                    DARK_GRAY = $8,
+                    LIGHT_BLUE = $9,	
+                    LIGHT_GREEN = $a,	
+                    LIGHT_CYAN = $b,	
+                    LIGHT_RED = $c,	
+                    PINK = $d,	
+                    YELLOW = $e,	
+                    WHITE = $f
+                  );
   TKVideoDeviceType = (kvdevtVGA);
   TKVideoDeviceMode = (kvdevmTEXT, kvdevmFB);
 
@@ -18,6 +35,11 @@ type
   end;
 
 procedure setup;
+
+(*
+ * @brief set the color to be used for writing in textmode from now on
+ *)
+procedure set_tm_color(const fore: TTextModeColor; const back: TTextModeColor);
 
 (*
  * @brief pushes all lines which are on screen up by one
@@ -39,22 +61,7 @@ var
 
 implementation
 
-procedure setup;
-begin
-  case device.devicetype of
-    kvdevtVGA: begin
-      if device.devicemode = kvdevmTEXT then
-        device.vidmem := PChar(VGA_TEXT_LOCATION);
-    end;
-  end;
-
-  case device.devicemode of
-    kvdevmTEXT: begin
-      cursor_x := 0;
-      cursor_y := 0;
-    end;
-  end;
-end;
+(*                     private procedures and functions                       *)
 
 (*
  * @brief implements putc for a framebuffer vga device.
@@ -99,6 +106,34 @@ begin
   cursor_x := cursor_x + 1;
 end;
 
+(******************************************************************************)
+(*                     public procedures and functions                        *)
+
+procedure setup;
+begin
+  case device.devicetype of
+    kvdevtVGA: begin
+      if device.devicemode = kvdevmTEXT then
+        device.vidmem := PChar(VGA_TEXT_LOCATION);
+    end;
+  end;
+
+  case device.devicemode of
+    kvdevmTEXT: begin
+      cursor_x := 0;
+      cursor_y := 0;
+    end;
+  end;
+end;
+
+procedure set_tm_color(const fore: TTextModeColor; const back: TTextModeColor);
+begin
+  case device.devicetype of
+    kvdevtVGA:
+      vga_tm_color := Char((Ord(back) shl 4) or Ord(fore));
+  end;
+end;
+
 procedure textmode_push;
 begin
   case device.devicetype of
@@ -112,21 +147,23 @@ end;
 procedure putc(const c: Char);
 begin
   case Byte(c) of
-  $0a: begin
-    cursor_y := cursor_y + 1;
-    if cursor_y >= device.height then
-      textmode_push;
-    exit;
-  end;
-  $0d: begin
-    cursor_x := 0;
-    exit;
-  end;
+    $0a: begin
+      cursor_y := cursor_y + 1;
+      if cursor_y >= device.height then
+        textmode_push;
+      exit;
+    end;
+    $0d: begin
+      cursor_x := 0;
+      exit;
+    end;
   end;
 
   case device.devicetype of
     kvdevtVGA: _vga_putc(c);
   end;
 end;
+
+(******************************************************************************)
 
 end.
