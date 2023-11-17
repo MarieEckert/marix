@@ -18,7 +18,17 @@ interface
     tkRecord, tkInterface, tkClass, tkObject, tkWChar, tkBool, tkInt64, tkQWord,
     tkDynArray, tkInterfaceRaw, tkProcVar, tkUString, tkUChar, tkHelper, tkFile,
     tkClassRef, tkPointer);
- 
+  
+    Int8    = ShortInt;
+    Int16   = SmallInt;
+    Int32   = Longint;
+    IntPtr  = PtrInt;
+    UInt8   = Byte;
+    UInt16  = Word;
+    UInt32  = Cardinal;
+    UIntPtr = PtrUInt;
+    UInt64   = QWord;
+
     jmp_buf = packed record
       rbx, rbp, r12, r13, r14, r15, rsp, rip: QWord;
       {$IFDEF win64}
