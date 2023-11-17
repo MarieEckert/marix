@@ -2,7 +2,7 @@
 unit marix;
 
 interface
-  uses kvideo, kconsole;
+  uses kvideo, kconsole, interrupts;
 
   procedure kernel_start; stdcall;
 
@@ -13,6 +13,8 @@ implementation
     kconsole.clear;
     kconsole.print('early setup done!'#13#10);
     kconsole.print('> Booting marix'#13#10); 
+    kconsole.print('>> Initializing IDT'#13#10);
+    interrupts.setup;
 
     asm
       @loop:
