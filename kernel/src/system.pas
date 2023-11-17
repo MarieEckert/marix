@@ -19,6 +19,8 @@ interface
     tkDynArray, tkInterfaceRaw, tkProcVar, tkUString, tkUChar, tkHelper, tkFile,
     tkClassRef, tkPointer);
   
+    PtrInt = Int64;
+    PtrUInt = QWord;
     Int8    = ShortInt;
     Int16   = SmallInt;
     Int32   = Longint;
