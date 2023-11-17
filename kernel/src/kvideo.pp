@@ -19,8 +19,6 @@ type
 
 procedure setup;
 
-procedure clear_screen;
-
 (*
  * @brief pushes all lines which are on screen up by one
  *)
@@ -101,18 +99,6 @@ begin
   cursor_x := cursor_x + 1;
 end;
 
-procedure clear_screen;
-begin
-  cursor_x := 0;
-  cursor_y := 0;
-  for cursor_x := 0 to device.height - 1 do
-    for cursor_y := 0 to device.width - 1 do
-      putc(' ');
-  
-  cursor_x := 0;
-  cursor_y := 0;
-end;
-
 procedure textmode_push;
 begin
   case device.devicetype of
@@ -125,14 +111,19 @@ end;
 
 procedure putc(const c: Char);
 begin
-  if c = Char($0a) then
-  begin
-    cursor_x := 0;
+  case Byte(c) of
+  $0a: begin
     cursor_y := cursor_y + 1;
     if cursor_y >= device.height then
       textmode_push;
     exit;
   end;
+  $0d: begin
+    cursor_x := 0;
+    exit;
+  end;
+  end;
+
   case device.devicetype of
     kvdevtVGA: _vga_putc(c);
   end;

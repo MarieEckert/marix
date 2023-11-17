@@ -7,6 +7,8 @@ uses kvideo;
 
 procedure setup(vga: Boolean);
 
+procedure clear;
+
 procedure print(const _str: PChar);
 
 const
@@ -35,6 +37,18 @@ begin
     _vga_setup;
     exit;
   end;
+end;
+
+procedure clear;
+begin
+  kvideo.cursor_x := 0;
+  kvideo.cursor_y := 0;
+  for kvideo.cursor_x := 0 to MAXROW - 1 do
+    for kvideo.cursor_y := 0 to MAXCOL - 1 do
+      kvideo.putc(' ');
+  
+  kvideo.cursor_x := 0;
+  kvideo.cursor_y := 0;
 end;
 
 procedure print(const _str: PChar);
