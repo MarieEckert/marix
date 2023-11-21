@@ -86,7 +86,14 @@ interface
     end;
  
 { --- End of nessesary part --- }
- 
+
+const 
+  fpc_in_round_real = 121;
+  fpc_in_int_real = 123;
+
+function Round(d : Double) : Integer; [internproc:fpc_in_round_real];
+function Int(d : Double) : Integer; [internproc:fpc_in_int_real];
+
 implementation
  
 end.
