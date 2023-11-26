@@ -22,6 +22,13 @@ procedure clear;
  *)
 procedure print(const _str: PChar);
 
+(*
+ * @brief converts an int to a string and then prints it to the kernel console
+ *
+ * @param crlf Sets if a carriage-return + linefeed combo should be output
+ *)
+procedure print_int(_int: Integer);
+
 const
   MAXCOL = 80;
   MAXROW = 25;
@@ -72,6 +79,30 @@ begin
     kvideo.putc(_str[i]);
     i := i + 1;
   end;
+end;
+
+procedure print_int(_int: Integer);
+const
+  MAX_DIGITS = 20;
+var
+  _str: array [0..MAX_DIGITS] of Char;
+  digit_count: Integer;
+begin
+  if _int < 0 then
+  begin
+    kvideo.putc('-');
+    _int := - _int;
+  end;
+
+  digit_count := 0;
+  repeat
+    _str[digit_count] := Char((_int mod 10) + Ord('0'));
+    _int := _int div 10;
+    Inc(digit_count);
+  until _int = 0;
+
+  for digit_count := digit_count - 1 downto 0 do
+    kvideo.putc(_str[digit_count]);
 end;
 
 end.
