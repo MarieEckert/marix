@@ -20,4 +20,4 @@ mkdir out
 
 echo linking...
 OBJS="$(find kernel/obj/ -name "*.o" | tr '\n' ' ')"
-x86_64-elf-ld --script=kernel/lint-boot/link.ld --output=out/marix.bin --nmagic $OBJS
+x86_64-elf-ld --script=kernel/link.ld --output=out/marix.bin --nmagic $OBJS

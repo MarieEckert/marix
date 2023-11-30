@@ -2,7 +2,7 @@ sector .config
   fields mariebuild:
     str asm 'nasm'
 
-    str src 'kernel/lint-boot/'
+    str src 'kernel/boot/'
     str obj 'kernel/obj/'
 
     list files 'header:lint'
