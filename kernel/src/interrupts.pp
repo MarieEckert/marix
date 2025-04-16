@@ -12,13 +12,13 @@ type
 
   {$PACKRECORDS 1}
   TInterruptDescriptor = packed record
-    offset_1: UInt16; // offset bits 0..15
-    selector: UInt16; // a code segment selector in GDT or LDT
-    ist: UInt8; // bits 0..2 holds Interrupt Stack Table offset, rest of bits zero.
-    type_attributes: UInt8; // gate type, dpl, and p fields
-    offset_2: UInt16; // offset bits 16..31
-    offset_3: UInt32; // offset bits 32..63
-    zero: UInt32; // reserved
+    offset_1         : UInt16; // offset bits 0..15
+    selector         : UInt16; // a code segment selector in GDT or LDT
+    ist              : UInt8;  // bits 0..2 holds Interrupt Stack Table offset, rest of bits zero.
+    type_attributes  : UInt8;  // gate type, dpl, and p fields
+    offset_2         : UInt16; // offset bits 16..31
+    offset_3         : UInt32; // offset bits 32..63
+    zero             : UInt32; // reserved
   end;
 
   PInterruptDescriptor = ^TInterruptDescriptor;
