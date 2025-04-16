@@ -20,7 +20,7 @@ mkdir -p iso_gen/boot/grub
 GRUBFILE=iso_gen/boot/grub/grub.cfg
 KERNELDEST=iso_gen/boot/
 
-echo "set timeout=0" > $GRUBFILE
+echo "set timeout=10" > $GRUBFILE
 echo "set default =0"                >> $GRUBFILE
 echo ""                              >> $GRUBFILE
 echo "menuentry "marix" {"           >> $GRUBFILE

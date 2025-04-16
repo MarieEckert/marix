@@ -6,8 +6,8 @@ sector .config
     str debug_flags 'debug'
     str release_flags 'release'
 
-    str comp_cmd 'mb -n --mode $(mode_flags) --in $(builddir)/$(file)'
-    str finalize_cmd 'mb -n --in $(builddir)/build.mb -e link'
+    str comp_cmd 'mb3 -n --mode $(mode_flags) --in $(builddir)/$(file)'
+    str finalize_cmd 'mb3 -n --in $(builddir)/build.mb -e link'
 
 sector .scripts
   lines link:

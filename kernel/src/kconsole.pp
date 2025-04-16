@@ -10,7 +10,7 @@ uses kvideo;
  * 
  * @param vga Sets if kvideo should be setup for VGA Text Mode.
  *)
-procedure setup(vga: Boolean);
+function setup(vga: Boolean): Integer;
 
 (*
  * @brief clears the kernel console
@@ -24,10 +24,13 @@ procedure print(const _str: PChar);
 
 (*
  * @brief converts an int to a string and then prints it to the kernel console
- *
- * @param crlf Sets if a carriage-return + linefeed combo should be output
  *)
 procedure print_int(_int: Integer);
+
+(*
+ * @brief converts an int to a string and then prints it to the kernel console
+ *)
+procedure print_int_hex(_int: UInt64);
 
 const
   MAXCOL = 80;
@@ -48,13 +51,15 @@ begin
   kvideo.vga_tm_color := Char(VGA_DEFAULT_KCONSOLECOLOR);
 end;
 
-procedure setup(vga: Boolean);
+function setup(vga: Boolean): Integer;
 begin
   if vga then
   begin
     _vga_setup;
-    exit;
+    exit(0);
   end;
+
+  exit(1);
 end;
 
 procedure clear;
@@ -103,6 +108,28 @@ begin
 
   for digit_count := digit_count - 1 downto 0 do
     kvideo.putc(_str[digit_count]);
+end;
+
+procedure print_int_hex(_int: UInt64);
+const
+  MAX_DIGITS = 32;
+  DIGITS: array of Char = ('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F');
+var
+  ix: Integer;
+  _str: array [0..MAX_DIGITS] of Char;
+begin
+  for ix := 0 to MAX_DIGITS - 1 do
+    _str[ix] := '0';
+
+  ix := 0;
+  repeat
+    _str[ix] := DIGITS[_int mod 16];
+    _int := _int div 16;
+    ix := ix + 1;
+  until (_int = 0) or (ix >= MAX_DIGITS);
+
+  for ix := MAX_DIGITS - 1 downto 0 do
+    kvideo.putc(_str[ix]);
 end;
 
 end.
